@@ -1,6 +1,7 @@
-# Machine learning package
+# Coursera: Practical Machine learning
+# Script from course commented by Alexander Buschle
 
-
+# Week 1 ####
 # Example 1 ####
 
 rm(list = ls())
@@ -97,4 +98,5 @@ sum(rule_1(spam$capitalAve) == spam$type)
 
 # rule 2
 sum(rule_2(spam$capitalAve) == spam$type)
+
 
