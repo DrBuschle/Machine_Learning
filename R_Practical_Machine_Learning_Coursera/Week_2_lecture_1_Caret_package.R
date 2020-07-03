@@ -21,6 +21,8 @@ data(spam)
 
 # split up your dataset to training and testing set
 # compute vector for this task
+
+# split the data on 'type'
 inTrain <- createDataPartition(y = spam$type, p = 0.75, list = F) # p: use 75 % of data to train the model and 25 % to test it
 
 # split up your data
