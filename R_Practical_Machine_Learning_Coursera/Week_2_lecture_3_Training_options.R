@@ -97,3 +97,30 @@ args(trainControl)
 #           alpha = 0.05, method = "gls", complete = TRUE), trim = FALSE,
 #           allowParallel = TRUE        <- here you can use multiple core and parallelization)
 # NULL
+
+
+
+
+
+# Seed example
+
+set.seed(1235)
+modelFit2 <- train(type ~., data = training, method = "glm")
+modelFit2
+
+
+# Generalized Linear Model 
+# 
+# 3451 samples
+# 57 predictor
+# 2 classes: 'nonspam', 'spam' 
+# 
+# No pre-processing
+# Resampling: Bootstrapped (25 reps) 
+# Summary of sample sizes: 3451, 3451, 3451, 3451, 3451, 3451, ... 
+# Resampling results:
+#   
+#   Accuracy  Kappa 
+# 0.9179    0.8272
+
+
