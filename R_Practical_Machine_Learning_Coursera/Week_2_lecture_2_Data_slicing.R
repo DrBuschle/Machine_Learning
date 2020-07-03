@@ -68,7 +68,7 @@ folds[[1]][1:10]  # check fold 1 and its 10 first elements
 
 set.seed(32323)
 
-# now returnTrain = FALSE
+# now returnTrain = FALSE -> it will return the TEST set!!!!!
 folds <- createFolds(y = spam$type, k = 10, list = TRUE, returnTrain = FALSE)
 
 sapply(folds, length) 
@@ -79,4 +79,54 @@ sapply(folds, length)
 folds[[1]][1:10]
 # [1] 24 27 32 40 41 43 55 58 63 68
 
+
+
+
+
+# SPAM Example: Resampling
+
+# you sample with replacement -> you can get value multiple times
+
+set.seed(32323)
+
+# here you resample
+folds <- createResample(y = spam$type, times = 10, list = TRUE)
+# times: tells the algorithm how often to resample
+
+sapply(folds, length) 
+
+# Resample01 Resample02 Resample03 Resample04 Resample05 Resample06 Resample07 Resample08 Resample09 Resample10 
+# 4601       4601       4601       4601       4601       4601       4601       4601       4601       4601 
+
+folds[[1]][1:10]
+# [1]  1  2  3  3  3  5  5  7  8 12
+
+
+
+
+
+# SPAM Example: Time Slices 
+
+set.seed(32323)
+
+# time vector of thousand units
+tme <- 1:1000
+
+# here you create your time slices
+folds <- createTimeSlices(y = tme, initialWindow = 20 , horizon = 10)
+# initialWindow: "initialWindow = 20" tells that the slices will have a size of 20 units
+# horizon: "horizon = 10" tells that you want to predict the following 10 units
+
+
+# folds gets split up to train and test set automatically
+names(folds)
+# [1] "train" "test" 
+
+# here is the result of the "initialWindow = 20" option
+folds$train[[1]]
+#  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+
+# here is the result of the "horizon = 10" option
+folds$test[[1]]
+#  [1] 21 22 23 24 25 26 27 28 29 30
 
