@@ -104,7 +104,10 @@ args(trainControl)
 
 # Seed example
 
-set.seed(1235)
+set.seed(1235)  # <- this will set a seed, which allows you to run a consistent analysis 
+                # with a set of random numbers
+                # simply said, it makes sure you get the same results when you repeat your analysis
+                # important to make sure other people get exactly the same, when they run the same code
 modelFit2 <- train(type ~., data = training, method = "glm")
 modelFit2
 
