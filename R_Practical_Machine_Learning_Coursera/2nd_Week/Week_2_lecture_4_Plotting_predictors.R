@@ -120,3 +120,43 @@ library(gridExtra)
 grid.arrange(my_boxplot, my_boxplot_jittered, ncol = 2)
 
 
+
+
+
+# Tables
+my_table <- table(cutWage, training$jobclass)
+my_table
+
+# cutWage       1. Industrial 2. Information
+# [ 20.1, 93)           451            259        <- more low wage jobs in industrial 
+# [ 93.0,119)           373            357
+# [119.4,318]           253            409      <- more high wage jobs in infomrational
+
+
+# get the proportions
+prop.table(my_table, 1)
+
+# 1: proportion in each row
+# 2: proportion in each column
+
+# cutWage       1. Industrial 2. Information
+# [ 20.1, 93)        0.6352         0.3648        <- sums up to 1 in each row -> percent
+# [ 93.0,119)        0.5110         0.4890        <- sums up to 1 in each row -> percent
+# [119.4,318]        0.3822         0.6178        <- sums up to 1 in each row -> percent
+
+
+
+
+# Density plot
+
+qplot(wage, color = education, data = training, geom = "density")
+
+# x-axis: wage
+#y-axis: density = proprortion of the data, which fall to the x-axis
+
+# you can show other things compared to boxplots
+# -> you can see how distributions change by group
+# you can easily overlay multiple plot
+
+
+
