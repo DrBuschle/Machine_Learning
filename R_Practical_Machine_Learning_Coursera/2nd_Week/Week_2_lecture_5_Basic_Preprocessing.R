@@ -141,3 +141,69 @@ par(mfrow = c(1,2))
 hist(trainCapAveS)
 qqnorm(trainCapAveS)
 
+
+# at the original plot there was a huge bar at around 0
+
+
+
+
+
+
+# Standardizing - Imputing data ("guess" NA values)
+
+set.seed(13343)
+
+# many algorithms have problems with missing values
+# therefore we will introduce some, just to check how to handle this
+
+# Make some values NA
+training$capAve <- training$capitalAve
+selectNA <- rbinom(dim(training)[1], size = 1, prob = 0.05) == 1
+training$capAve[selectNA] <- NA
+
+
+# Impute (anrechnen) and standardize
+preObj <- preProcess(training[ , -58], method = "knnImpute")
+# knnImpute: k nearest neightbours Imputation
+# finds the k nearest neighbours, which look most like the missing value and puts the average value to the missing one
+
+# install.packages("RANN")
+
+capAve <- predict(preObj, training[ , -58])$capAve
+
+
+# Standardize true value
+capAveTruth <- training$capitalAve
+capAveTruth <- (capAveTruth-mean(capAveTruth)) / sd(capAveTruth)
+
+
+
+# Standardize - Imputing data
+
+# all value (including imputed values) - true values
+quantile(capAve - capAveTruth)
+
+# 0%        25%        50%        75%       100% 
+# -12.541920  -0.013119  -0.008136   0.002258   4.588768 
+
+# around 50 % the difference is close to zero, here it worked well
+# at 0 % and 100 % the differences are much larger, here it didn't work too well
+
+
+# only imputed values - true values
+quantile((capAve - capAveTruth)[selectNA])
+# 0%        25%        50%        75%       100% 
+# -12.541920  -0.017931  -0.005889   0.017628   1.178953 
+
+# -> the value should be more variable
+
+
+# only NOT imputed values - true values
+quantile((capAve - capAveTruth)[!selectNA])
+
+# 0%       25%       50%       75%      100% 
+# -0.017023 -0.012991 -0.008192  0.001791  4.588768 
+
+# the values should be closer to each other
+
+
