@@ -36,6 +36,7 @@ sd(training$capitalAve)
 
 
 
+
 # Standardizing - training set
 
 trainCapAve <- training$capitalAve
@@ -74,4 +75,69 @@ sd(testCapAveS)
 
 
 
+# Standardization - preProcessfunction
+
+# column 58 is the one we care about ("type"), it is the one about spam or not spam
+preObj <- preProcess(training[ , -58], method = c("center", "scale"))
+# method = c("center", "scale"): does what we did in the example before: 
+# take the value, subtract the mean and this result gets divided by its standard deviation
+
+trainCapAveS <- predict(preObj, training[ , -58])$capitalAve
+mean(trainCapAveS)
+
+# [1] -1.206e-17    <- same value like in the example before
+
+sd(trainCapAveS)
+
+# [1] 1       <- same value like in the example before
+
+
+# the preObj can also be applied on the test set directly
+
+testCapAveS <- predict(preObj, testing[ , -58])$capitalAve
+mean(testCapAveS)
+# [1] 0.01588
+
+sd(testCapAveS)
+# [1] 1.262
+
+
+
+
+
+# Standardization - preProcessargument
+# you can directly tell the train function to use the preProcess argument and specifiy it
+
+set.seed(32343)
+modelFit <- train(type ~., data = training, preProcess = c("center", "scale"), method = "glm")
+modelFit
+
+# Generalized Linear Model 
+# 
+# 3451 samples
+# 57 predictor
+# 2 classes: 'nonspam', 'spam' 
+# 
+# Pre-processing: centered (57), scaled (57) 
+# Resampling: Bootstrapped (25 reps) 
+# Summary of sample sizes: 3451, 3451, 3451, 3451, 3451, 3451, ... 
+# Resampling results:
+#   
+#   Accuracy  Kappa 
+# 0.9203    0.8327
+
+
+
+
+# Standardizing - Box-Cox transforms
+# other kind of transformation
+
+preObj <- preProcess(training[ , -58], method = c("BoxCox"))
+# BoxCox takes continuous data and try to make them look like normal data
+# they do that by estimating a specific set of parameters using maximum likelihood
+
+trainCapAveS <- predict(preObj, training[ , -58])$capitalAve
+par(mfrow = c(1,2))
+hist(trainCapAveS)
+qqnorm(trainCapAveS)
 
