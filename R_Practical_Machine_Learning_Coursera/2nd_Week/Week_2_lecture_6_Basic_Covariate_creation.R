@@ -107,4 +107,30 @@ nsv
 
 # Spline basis ####
 
+# you can do linear regression, but you can also do that on curvy lines
+
+library(splines)
+
+bsBasis <- bs(training$age, df = 3)
+# bs(): creates a polynominal variable
+# df: degrees of freedom; 3 = third degree polynominal 
+# take only one variable: here age
+
+bsBasis
+
+#           1            2            3
+# [1,] 0.00000000 0.0000000000 0.000000e+00
+# [2,] 0.23685006 0.0253767916 9.063140e-04
+# [3,] 0.41633799 0.3211750193 8.258786e-02
+# [4,] 0.43081384 0.2910904300 6.556091e-02
+# [5,] 0.36252559 0.3866939680 1.374912e-01
+# [6,] 0.30633413 0.4241549461 1.957638e-01
+# [7,] 0.42415495 0.3063341278 7.374710e-02
+# ...
+
+# 1: actual age, but they are scaled for computational purposes
+# 2: age^2 (squared): to find a quadratic relationship between age and outcome
+# 3: age^3 (cubed): to find a cubic relationship between age and outcome
+
+
 
