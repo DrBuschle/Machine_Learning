@@ -132,5 +132,45 @@ bsBasis
 # 2: age^2 (squared): to find a quadratic relationship between age and outcome
 # 3: age^3 (cubed): to find a cubic relationship between age and outcome
 
+# If you add these variables, you allow for curvy model fitting
 
+
+
+
+# Fitting curves with splines ####
+
+lm1 <- lm(wage ~ bsBasis, data = training)  # we calculated this a few lines above
+# lm: linear model
+# wage is the outcome
+# ~ tells you what we are predicting with
+
+
+# plot wage on age
+plot(training$age, training$wage, pch = 19, cex = 0.5)
+
+# plot the predicted wage on age
+points(training$age, predict(lm1, newdata = training), col = "green", pch = 19, cex = 1)
+# predict on linear model and our training data
+
+# creation of new variables by being flexible 
+
+
+
+
+
+# Splines on the test set ####
+predict(bsBasis, age = testing$age)
+# -> this is to plug in the same procedure to the test set, you used on the training set
+# meaning: you have to use the training set output of the bs function on the testing function
+# but NOT the bs function directly. Otherwise you will have some bias
+
+
+#           1            2            3
+# [1,] 0.00000000 0.0000000000 0.000000e+00
+# [2,] 0.23685006 0.0253767916 9.063140e-04
+# [3,] 0.41633799 0.3211750193 8.258786e-02
+# [4,] 0.43081384 0.2910904300 6.556091e-02
+# [5,] 0.36252559 0.3866939680 1.374912e-01
+# [6,] 0.30633413 0.4241549461 1.957638e-01
+# [7,] 0.42415495 0.3063341278 7.374710e-02
 
