@@ -64,15 +64,56 @@ plot(spam[, 34], spam [, 32])
 # We could rotate the plot
 
 # adding up the variables
-X <- 1.1 * training$num415 + 1.1 * training$num857
+X <- 0.71 * training$num415 + 0.71 * training$num857
 # becomes the x-axis
 
 
 # subtracting the variables
-Y <-1.1 * training$num415 - 1.1 * training$num857
+Y <- 0.71 * training$num415 - 0.71 * training$num857
 # becomes the y-axis
 
 # plotting
 plot(X,Y)
 
 
+
+
+
+# Principal components in R - prcomp
+
+# make a small data set with the two values we found before to be highly correlated
+smallSpam <- spam[, c(34, 32)]
+
+# make principle component analysis
+prComp <- prcomp(smallSpam)
+
+# plot first against second principle component
+plot(prComp$x[, 1], prComp$x[, 2])
+
+
+# here you get a rotation matrix
+# -> tells you how it is summing up the rotation matrix
+
+prComp$rotation
+#           PC1        PC2
+# num415 0.7080625  0.7061498
+# num857 0.7061498 -0.7080625
+
+# the first PCA component explains the most variability -> in this case the sum of the two variables
+# the second PCA component explains the most variability -> in this case the difference between the two variables
+
+
+
+
+
+# PCA on SPAM data
+
+# set the color for spam and nonspam
+typeColor <- ((spam$type == "spam") * 1 + 1)
+
+# calculate the PCA for all the variable expect spam
+prComp <- prcomp(log10(spam[, -58] + 1))
+# add 1 to make them look more gaussian and make sure there are not negative values for the log10 transformation 
+
+# plot the first against the second PCA component
+plot(prComp$x[, 1], prComp$x[, 2], col = typeColor, xlab = "PC1", ylab = "PC2")
