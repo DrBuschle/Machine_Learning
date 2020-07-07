@@ -117,3 +117,48 @@ prComp <- prcomp(log10(spam[, -58] + 1))
 
 # plot the first against the second PCA component
 plot(prComp$x[, 1], prComp$x[, 2], col = typeColor, xlab = "PC1", ylab = "PC2")
+
+
+
+# PC1 explains the most variation in the data
+# it will be a quite complex thing, because it is build out of 57 variables
+
+# PC2 explains the second most variation in the data
+# PC3 ....
+
+# -> this way you can reduce the size of your data set while still capturing a large amount of variation:
+# this is a idea behind feature creation
+
+
+
+# PCA with caret
+
+# preprocces
+preProc <- preProcess(log10(spam[, -58] + 1), method = "pca", pcaCom = 2)
+
+# predict
+spamPC <- predict(preProc, log10(spam[, -58] + 1))
+
+# plot
+plot(spamPC[, 1], spamPC[, 2], col = typeColor, xlab = "PC1", ylab = "PC2")
+
+
+
+
+
+# Preprocessing with PCA
+# install.packages("randomForest")
+library(randomForest)
+
+# preprocces
+preProc <- preProcess(log10(training[, -58] + 1), method = "pca", pcaComp = 2)
+
+# predict
+trainPC <- predict(preProc, log10(training[, -58] + 1))
+
+# fit the model
+# modelFit <- train(training$type ~., method = "glm", data = trainPC)
+# code does not work like this
+modelFit <- train(x = trainPC, y = training$type, method = "glm")
+
+# it related the training set variable "type" to the principle components: data = trainPC
