@@ -146,6 +146,7 @@ plot(spamPC[, 1], spamPC[, 2], col = typeColor, xlab = "PC1", ylab = "PC2")
 
 
 
+
 # Preprocessing with PCA
 # install.packages("randomForest")
 library(randomForest)
@@ -162,3 +163,95 @@ trainPC <- predict(preProc, log10(training[, -58] + 1))
 modelFit <- train(x = trainPC, y = training$type, method = "glm")
 
 # it related the training set variable "type" to the principle components: data = trainPC
+
+
+# once again, in the test set, you have to use the same principal components (preProc) from the training set
+
+testPC <- predict(preProc, log10(testing[, -58] + 1))
+
+# here you predict
+confusionMatrix(testing$type, predict(modelFit, testPC))
+# modelFit: comes from the training set
+# testPC: come from the testing set
+# confusionMatrix: from caret package to get the accuracy
+# testing$type: 
+
+# Confusion Matrix and Statistics
+# 
+# Reference
+# Prediction nonspam spam
+# nonspam     641   56
+# spam         74  379
+# 
+# Accuracy : 0.887       <- high accuracy even though we have a low number of principal components
+                        # PCA can reduce number of variables, but maintain accuracy
+# 95% CI : (0.8672, 0.9047)
+# No Information Rate : 0.6217          
+# P-Value [Acc > NIR] : <2e-16          
+# 
+# Kappa : 0.7616          
+# 
+# Mcnemar's Test P-Value : 0.136           
+# 
+# Sensitivity : 0.8965          
+# Specificity : 0.8713          
+# Pos Pred Value : 0.9197          
+# Neg Pred Value : 0.8366          
+# Prevalence : 0.6217          
+# Detection Rate : 0.5574          
+# Detection Prevalence : 0.6061          
+# Balanced Accuracy : 0.8839          
+# 
+# 'Positive' Class : nonspam   
+
+
+
+
+
+
+
+
+# Alternative (sets # of PCs)
+# you can also build in the predict function directly in the training model instead of using it separately
+
+modelFit <- train(x = training, y = training$type, method = "glm", preProcess = "pca")
+# train function: from caret package
+# x = training: your training set
+# y= training$type: what you are training for
+# preProcess: preprocessing PCA will be done as part of the training process
+
+
+confusionMatrix(testing$type, predict(modelFit, testing))
+
+# Confusion Matrix and Statistics
+# 
+# Reference
+# Prediction nonspam spam
+# nonspam     697    0
+# spam          0  453
+# 
+# Accuracy : 1          
+# 95% CI : (0.9968, 1)
+# No Information Rate : 0.6061     
+# P-Value [Acc > NIR] : < 2.2e-16  
+# 
+# Kappa : 1          
+# 
+# Mcnemar's Test P-Value : NA         
+# 
+# Sensitivity : 1.0000     
+# Specificity : 1.0000     
+# Pos Pred Value : 1.0000     
+# Neg Pred Value : 1.0000     
+# Prevalence : 0.6061     
+# Detection Rate : 0.6061     
+# Detection Prevalence : 0.6061     
+# Balanced Accuracy : 1.0000     
+# 
+# 'Positive' Class : nonspam 
+
+
+
+
+
+
