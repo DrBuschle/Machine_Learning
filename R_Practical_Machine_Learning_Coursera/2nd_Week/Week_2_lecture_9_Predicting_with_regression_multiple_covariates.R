@@ -15,6 +15,8 @@ library(caret)  # required for prediction
 
 data(Wage)
 Wage <- subset(Wage, select = - c(logwage))
+# subset all the data except the one you are trying to predict
+
 summary(Wage)
 
 # year           age                     maritl           race                   education                     region    
@@ -25,6 +27,7 @@ summary(Wage)
 # 3rd Qu.:2008   3rd Qu.:51.00   5. Separated    :  55                   5. Advanced Degree:426   5. South Atlantic    :   0  
 # Max.   :2009   Max.   :80.00                                                                    6. East South Central:   0  
 # (Other)              :   0  
+
 # jobclass               health      health_ins        wage       
 # 1. Industrial :1544   1. <=Good     : 858   1. Yes:2083   Min.   : 20.09  
 # 2. Information:1456   2. >=Very Good:2142   2. No : 917   1st Qu.: 85.38  
@@ -32,5 +35,30 @@ summary(Wage)
 # Mean   :111.70  
 # 3rd Qu.:128.68  
 # Max.   :318.34  
+
+
+
+
+# Get training / test sets
+
+inTrain <- createDataPartition(y = Wage$wage, p = 0.7, list = F)
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+
+dim(training)
+# [1] 2102   10
+
+dim(testing)
+# [1] 898  10
+
+
+
+
+# Feature plot ####
+
+featurePlot(x = training[, c("age", "education", "jobclass")],
+            y = training$wage,
+            plot = "pairs")
+
 
 
