@@ -108,3 +108,10 @@ print(modFit)
 
 # Diagnostics
 
+plot(finMod, 1, pch = 19, cex = 0.5, col = c("black"))
+# fitted values are the predictions form our model
+# residuals: amount of variation left over after you fitted your model
+#            -> this is the difference between your model and the real values
+#           would be best if the line would be centered around zero
+
+
