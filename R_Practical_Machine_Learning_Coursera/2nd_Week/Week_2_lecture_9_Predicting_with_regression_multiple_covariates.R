@@ -62,3 +62,49 @@ featurePlot(x = training[, c("age", "education", "jobclass")],
 
 
 
+
+
+# Plot age versus wage ####
+
+qplot(age, wage, data = training)
+
+
+# Plot age versus wage color by jobclass ####
+
+qplot(age, wage, color = jobclass, data = training) 
+
+
+# Plot age versus wage color by education ####
+
+qplot(age, wage, color = education, data = training) 
+
+
+
+# Fit a linear model ####
+
+modFit <- train(wage ~age + jobclass + education, method = "lm", data = training)
+finMod <- modFit$finalModel
+print(modFit)
+
+# jobclass and education are factor variables
+# -> by default the train function creates the indicator variables (0, 1)
+
+# Linear Regression 
+# 
+# 2102 samples
+# 3 predictor       <- 3 predictors
+# 
+# No pre-processing
+# Resampling: Bootstrapped (25 reps) 
+# Summary of sample sizes: 2102, 2102, 2102, 2102, 2102, 2102, ... 
+# Resampling results:
+#   
+#   RMSE      Rsquared   MAE     
+# 35.43463  0.2621668  24.57479
+# 
+# Tuning parameter 'intercept' was held constant at a value of TRUE
+
+
+
+# Diagnostics
+
