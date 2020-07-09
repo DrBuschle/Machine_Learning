@@ -106,12 +106,47 @@ print(modFit)
 
 
 
-# Diagnostics
+# Diagnostics ####
 
 plot(finMod, 1, pch = 19, cex = 0.5, col = c("black"))
 # fitted values are the predictions form our model
 # residuals: amount of variation left over after you fitted your model
 #            -> this is the difference between your model and the real values
 #           would be best if the line would be centered around zero
+# the points labeled with a number are outliers, which one might explore a little bit further 
 
 
+
+
+
+
+# Color by variables not used in the model ####
+
+qplot(finMod$fitted.values, finMod$residuals, color = race, data = training)
+
+
+
+
+# Plot by index ####
+
+plot(finMod$residuals, pch = 19)
+# Index: what row of the data set you are looking at
+
+
+
+
+
+# Predicted versus truth in test set #### 
+
+pred <- predict(modFit, testing)
+qplot(wage, pred, color = year, data = testing)
+
+# -> this is just to check if your analysis worked or not, 
+# but never go back to your training set afterwards to modify it to fit better
+
+
+
+# If you want to use all covariate ####
+modFitAll <- train(wage ~ ., data = training, method = "lm")
+pred <- predict(modFitAll, testing)
+qplot(wage, pred, data = testing)
