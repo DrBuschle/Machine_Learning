@@ -147,7 +147,7 @@ plot(spamPC[, 1], spamPC[, 2], col = typeColor, xlab = "PC1", ylab = "PC2")
 
 
 
-# Preprocessing with PCA
+# Preprocessing with PCA ####
 # install.packages("randomForest")
 library(randomForest)
 
@@ -158,8 +158,10 @@ preProc <- preProcess(log10(training[, -58] + 1), method = "pca", pcaComp = 2)
 trainPC <- predict(preProc, log10(training[, -58] + 1))
 
 # fit the model
-# modelFit <- train(training$type ~., method = "glm", data = trainPC)
 # code does not work like this
+# modelFit <- train(training$type ~., method = "glm", data = trainPC)
+
+# but like this
 modelFit <- train(x = trainPC, y = training$type, method = "glm")
 
 # it related the training set variable "type" to the principle components: data = trainPC
